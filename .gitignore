@@ -1,0 +1,5 @@
+node_modules
+quotes.json
+.env
+*.jpg
+*.png
