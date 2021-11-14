@@ -53,17 +53,37 @@ Repository.uploadImageToCloudinary = (fileName) => {
     try {
       const filePath = path.join(__dirname, "..", fileName);
       console.log("uploading", filePath);
-      cloudinary.uploader.upload(filePath, function (err, result) {
-        if (err) {
-          console.log("uploadImageToCloudinary error", err);
-          return reject(null);
-        } else {
-          console.log("uploadImageToCloudinary success", result);
-          return resolve(result.secure_url);
+      cloudinary.uploader.upload(
+        filePath,
+        { resource_type: "image", type: "facebook" },
+        function (err, result) {
+          if (err) {
+            console.log("uploadImageToCloudinary error", err);
+            return reject(null);
+          } else {
+            console.log("uploadImageToCloudinary success", result);
+            return resolve(result.secure_url);
+          }
         }
-      });
+      );
     } catch (e) {
       console.log("uploadImageToCloudinary error", e.message);
+      return reject(null);
+    }
+  });
+};
+
+Repository.deleteResourcesFromCloudinary = () => {
+  return new Promise((resolve, reject) => {
+    try {
+      cloudinary.v2.api.delete_all_resources({}, function (error, result) {
+        if (error) {
+          console.log("cloudinary delete_all_resources error", error);
+        }
+        return resolve(result);
+      });
+    } catch (e) {
+      console.log("deleteResourcesFromCloudinary error", e.message);
       return reject(null);
     }
   });

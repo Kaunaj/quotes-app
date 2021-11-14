@@ -80,6 +80,19 @@ Repository.dailyEveningPost = new CronJob(
   "Asia/Kolkata"
 );
 
+Repository.weeklyCleanup = new CronJob(
+  "00 00 * * MON",
+  async function () {
+    let date = new Date();
+    console.log("weekly cleanup cron running", date);
+    //* delete all resources from cloudinary *//
+    imageService.deleteResourcesFromCloudinary();
+  },
+  null,
+  true,
+  "Asia/Kolkata"
+);
+
 // Repository.testingPost = new CronJob(
 //   "18 22 * * *",
 //   async function () {
